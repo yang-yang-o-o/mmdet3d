@@ -1,0 +1,95 @@
+{
+    "model_files": {
+        "net": {
+            "net": "model.onnx",
+            "backend": "kestrel_nart",
+            "max_batch_size": 1,
+            "input": {
+                "data": "data"
+            },
+            "output": {
+                "fpn0.cls_score": "fpn0.cls_score",
+                "fpn0.bbox_pred": "fpn0.bbox_pred",
+                "fpn0.centerness": "fpn0.centerness",
+                "fpn1.cls_score": "fpn1.cls_score",
+                "fpn1.bbox_pred": "fpn1.bbox_pred",
+                "fpn1.centerness": "fpn1.centerness",
+                "fpn2.cls_score": "fpn2.cls_score",
+                "fpn2.bbox_pred": "fpn2.bbox_pred",
+                "fpn2.centerness": "fpn2.centerness",
+                "fpn3.cls_score": "fpn3.cls_score",
+                "fpn3.bbox_pred": "fpn3.bbox_pred",
+                "fpn3.centerness": "fpn3.centerness",
+                "fpn4.cls_score": "fpn4.cls_score",
+                "fpn4.bbox_pred": "fpn4.bbox_pred",
+                "fpn4.centerness": "fpn4.centerness"
+            }
+        }
+    },
+    "input_h": 448,
+    "input_w": 1408,
+    "strides": [
+        8,
+        16,
+        32,
+        64,
+        128
+    ],
+    "aft_top_k": 100,
+    "class": [
+        {
+            "label": "VEHICLE_CAR",
+            "confidence_thresh": 0.0,
+            "id": 0
+        },
+        {
+            "label": "BIKE_BICYCLE",
+            "confidence_thresh": 0.0,
+            "id": 1
+        },
+        {
+            "label": "PEDESTRIAN",
+            "confidence_thresh": 0.0,
+            "id": 2
+        }
+    ],
+    "pixel_means": [
+        0,
+        0,
+        0
+    ],
+    "pixel_stds": [
+        1,
+        1,
+        1
+    ],
+    "is_rgb": false,
+    "scale_offset": [
+        0.3957730233669281,
+        0.40282708406448364,
+        0.4099997282028198,
+        0.41398167610168457,
+        0.41413503885269165
+    ],
+    "scale_depth": [
+        1.5279556512832642,
+        0.7717456221580505,
+        0.3931781053543091,
+        0.20837919414043427,
+        0.11961153894662857
+    ],
+    "scale_size": [
+        0.7698555588722229,
+        0.7697874903678894,
+        0.7709783911705017,
+        0.7726323008537292,
+        0.7744305729866028
+    ],
+    "scale_bbox2d": [
+        1.5686591863632202,
+        1.5783581733703613,
+        1.5783385038375854,
+        1.561842441558838,
+        1.5332884788513184
+    ]
+}

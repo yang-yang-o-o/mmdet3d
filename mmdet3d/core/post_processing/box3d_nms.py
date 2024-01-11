@@ -53,37 +53,39 @@ def box3d_multiclass_nms(mlvl_bboxes,
     for i in range(0, num_classes):
         # get bboxes and scores of this class
         cls_inds = mlvl_scores[:, i] > score_thr
+        # cls_inds = mlvl_scores[:, i] > 0.0 # 类别i中类别分数大于score_thr的行下标
         if not cls_inds.any():
             continue
 
-        _scores = mlvl_scores[cls_inds, i]
-        _bboxes_for_nms = mlvl_bboxes_for_nms[cls_inds, :]
+        _scores = mlvl_scores[cls_inds, i] # 挑出类别i的类别分数
+        _bboxes_for_nms = mlvl_bboxes_for_nms[cls_inds, :] # 挑出类别i的3dbox的投影2d bev box
 
         if cfg.use_rotate_nms:
-            nms_func = nms_bev
+            nms_func = nms_bev # 计算2d bev box的旋转nms
         else:
             nms_func = nms_normal_bev
 
-        selected = nms_func(_bboxes_for_nms, _scores, cfg.nms_thr)
+        selected = nms_func(_bboxes_for_nms, _scores, cfg.nms_thr) # 内部调用C++代码实现
         _mlvl_bboxes = mlvl_bboxes[cls_inds, :]
-        bboxes.append(_mlvl_bboxes[selected])
-        scores.append(_scores[selected])
+        bboxes.append(_mlvl_bboxes[selected]) # nms后保留的3d box
+        scores.append(_scores[selected]) # nms后保留的类别分数与Centerness的乘积
         cls_label = mlvl_bboxes.new_full((len(selected), ),
                                          i,
                                          dtype=torch.long)
-        labels.append(cls_label)
+        labels.append(cls_label) # nms后保留的3d box 对应的类别
 
         if mlvl_dir_scores is not None:
             _mlvl_dir_scores = mlvl_dir_scores[cls_inds]
-            dir_scores.append(_mlvl_dir_scores[selected])
+            dir_scores.append(_mlvl_dir_scores[selected]) # nms后保留的朝向二分类
         if mlvl_attr_scores is not None:
             _mlvl_attr_scores = mlvl_attr_scores[cls_inds]
-            attr_scores.append(_mlvl_attr_scores[selected])
+            attr_scores.append(_mlvl_attr_scores[selected]) # nms后保留的类别细分类
         if mlvl_bboxes2d is not None:
             _mlvl_bboxes2d = mlvl_bboxes2d[cls_inds]
-            bboxes2d.append(_mlvl_bboxes2d[selected])
+            bboxes2d.append(_mlvl_bboxes2d[selected]) # nms后保留的2dbox
 
     if bboxes:
+        # cat 输出结果
         bboxes = torch.cat(bboxes, dim=0)
         scores = torch.cat(scores, dim=0)
         labels = torch.cat(labels, dim=0)
@@ -93,6 +95,7 @@ def box3d_multiclass_nms(mlvl_bboxes,
             attr_scores = torch.cat(attr_scores, dim=0)
         if mlvl_bboxes2d is not None:
             bboxes2d = torch.cat(bboxes2d, dim=0)
+        # 如果输出结果数量多于200个，取scores最高的前200个
         if bboxes.shape[0] > max_num:
             _, inds = scores.sort(descending=True)
             inds = inds[:max_num]

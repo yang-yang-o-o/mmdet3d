@@ -5,9 +5,13 @@ import warnings
 import numpy as np
 import torch
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
-from mmcv.runner import (HOOKS, DistSamplerSeedHook, EpochBasedRunner,
+# from mmcv.runner import (HOOKS, DistSamplerSeedHook, EpochBasedRunner,
+#                          Fp16OptimizerHook, OptimizerHook, build_optimizer,
+#                          build_runner, get_dist_info)
+from mmcv.runner import (HOOKS, DistSamplerSeedHook,
                          Fp16OptimizerHook, OptimizerHook, build_optimizer,
-                         build_runner, get_dist_info)
+                        get_dist_info)
+from mmdet3d.runner import build_runner, EpochBasedRunner
 from mmcv.utils import build_from_cfg
 from torch import distributed as dist
 
@@ -22,7 +26,6 @@ from mmseg.core import DistEvalHook as MMSEG_DistEvalHook
 from mmseg.core import EvalHook as MMSEG_EvalHook
 from mmseg.datasets import build_dataloader as build_mmseg_dataloader
 from mmseg.utils import get_root_logger as get_mmseg_root_logger
-
 
 def init_random_seed(seed=None, device='cuda'):
     """Initialize random seed.
@@ -313,7 +316,8 @@ def train_detector(model,
         cfg.resume_from = resume_from
 
     if cfg.resume_from:
-        runner.resume(cfg.resume_from)
+        # runner.resume(cfg.resume_from)
+        runner.custom_resume(cfg.resume_from)
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
     runner.run(data_loaders, cfg.workflow)

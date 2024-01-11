@@ -128,14 +128,14 @@ def xywhr2xyxyr(boxes_xywhr):
         (torch.Tensor | np.ndarray): Converted boxes in XYXYR format.
     """
     boxes = torch.zeros_like(boxes_xywhr)
-    half_w = boxes_xywhr[..., 2] / 2
-    half_h = boxes_xywhr[..., 3] / 2
+    half_w = boxes_xywhr[..., 2] / 2 # w/2
+    half_h = boxes_xywhr[..., 3] / 2 # l/2
 
-    boxes[..., 0] = boxes_xywhr[..., 0] - half_w
-    boxes[..., 1] = boxes_xywhr[..., 1] - half_h
-    boxes[..., 2] = boxes_xywhr[..., 0] + half_w
-    boxes[..., 3] = boxes_xywhr[..., 1] + half_h
-    boxes[..., 4] = boxes_xywhr[..., 4]
+    boxes[..., 0] = boxes_xywhr[..., 0] - half_w # x - w/2
+    boxes[..., 1] = boxes_xywhr[..., 1] - half_h # depth - l/2
+    boxes[..., 2] = boxes_xywhr[..., 0] + half_w # x + w/2
+    boxes[..., 3] = boxes_xywhr[..., 1] + half_h # depth + l/2
+    boxes[..., 4] = boxes_xywhr[..., 4] # bev yaw
     return boxes
 
 
@@ -232,18 +232,22 @@ def points_img2cam(points, cam2img):
     assert cam2img.shape[1] <= 4
     assert points.shape[1] == 3
 
-    xys = points[:, :2]
-    depths = points[:, 2].view(-1, 1)
-    unnormed_xys = torch.cat([xys * depths, depths], dim=1)
+    xys = points[:, :2] # 获取图像坐标xy，nx2
+    depths = points[:, 2].view(-1, 1) # 获取相机坐标系下的深度，nx1
+    unnormed_xys = torch.cat([xys * depths, depths], dim=1) # 对应投影公式的左边：z*[u, v, 1]，nx3
 
     pad_cam2img = torch.eye(4, dtype=xys.dtype, device=xys.device)
-    pad_cam2img[:cam2img.shape[0], :cam2img.shape[1]] = cam2img
-    inv_pad_cam2img = torch.inverse(pad_cam2img).transpose(0, 1)
+    pad_cam2img[:cam2img.shape[0], :cam2img.shape[1]] = cam2img # 构建4x4的齐次内参矩阵
+    inv_pad_cam2img = torch.inverse(pad_cam2img).transpose(0, 1) # 计算 内参的逆的转置 (k^-1)^T，
+                                                                 # 也等于内参转置的逆 (k^T)^-1
 
     # Do operation in homogeneous coordinates.
     num_points = unnormed_xys.shape[0]
-    homo_xys = torch.cat([unnormed_xys, xys.new_ones((num_points, 1))], dim=1)
-    points3D = torch.mm(homo_xys, inv_pad_cam2img)[:, :3]
+    homo_xys = torch.cat([unnormed_xys, xys.new_ones((num_points, 1))], dim=1) # 把 z*[u, v, 1] 改成 nx4的齐次坐标 
+    points3D = torch.mm(homo_xys, inv_pad_cam2img)[:, :3] # z*U = k*P ->
+                                                          # (z*U)^T = P^T * k^T ->
+                                                          # (z*U)^T * (k^T)^-1 = P^T ->
+                                                          # (z*U)^T * (k^-1)^T = P^T
 
     return points3D
 
