@@ -160,11 +160,11 @@ class CameraInstance3DBoxes(BaseInstance3DBoxes):
     def bev(self):
         """torch.Tensor: 2D BEV box of each box with rotation
             in XYWHR format, in shape (N, 5)."""
-        bev = self.tensor[:, [0, 2, 3, 5, 6]].clone()
+        bev = self.tensor[:, [0, 2, 3, 5, 6]].clone() # 取出 x，depth，w，l，yaw
         # positive direction of the gravity axis
         # in cam coord system points to the earth
         # so the bev yaw angle needs to be reversed
-        bev[:, -1] = -bev[:, -1]
+        bev[:, -1] = -bev[:, -1] # 相机系的yaw转换为bev系，取负
         return bev
 
     def rotate(self, angle, points=None):

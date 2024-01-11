@@ -16,6 +16,9 @@ from .transforms_3d import (AffineResize, BackgroundPointsFilter,
                             PointsRangeFilter, RandomDropPointsColor,
                             RandomFlip3D, RandomJitterPoints, RandomShiftScale,
                             VoxelBasedPointSampler)
+from .formating_faw import DefaultFormatBundle3D_faw, Collect3D_faw
+from .loading_faw import LoadImageFromFileMono3D_faw
+from .transforms_3d_faw import Mono3DResize_faw
 
 __all__ = [
     'ObjectSample', 'RandomFlip3D', 'ObjectNoise', 'GlobalRotScaleTrans',
@@ -28,5 +31,7 @@ __all__ = [
     'VoxelBasedPointSampler', 'GlobalAlignment', 'IndoorPatchPointSample',
     'LoadImageFromFileMono3D', 'ObjectNameFilter', 'RandomDropPointsColor',
     'RandomJitterPoints', 'AffineResize', 'RandomShiftScale',
-    'LoadPointsFromDict'
+    'LoadPointsFromDict',
+    'DefaultFormatBundle3D_faw', 'Collect3D_faw',
+    'LoadImageFromFileMono3D_faw', 'Mono3DResize_faw'
 ]
