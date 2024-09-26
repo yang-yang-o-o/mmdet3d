@@ -118,6 +118,7 @@ work_dirs/
 exps/
 *~
 mmdet3d/.mim
+*models/
 
 # Pytorch
 *.pth

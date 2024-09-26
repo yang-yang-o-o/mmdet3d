@@ -5,9 +5,10 @@ from mmdet.core.bbox.samplers import (BaseSampler, CombinedSampler,
                                       PseudoSampler, RandomSampler,
                                       SamplingResult)
 from .iou_neg_piecewise_sampler import IoUNegPiecewiseSampler
+from .pseudo_sampler import PseudoSampler_custom
 
 __all__ = [
     'BaseSampler', 'PseudoSampler', 'RandomSampler',
     'InstanceBalancedPosSampler', 'IoUBalancedNegSampler', 'CombinedSampler',
-    'OHEMSampler', 'SamplingResult', 'IoUNegPiecewiseSampler'
+    'OHEMSampler', 'SamplingResult', 'IoUNegPiecewiseSampler', 'PseudoSampler_custom'
 ]

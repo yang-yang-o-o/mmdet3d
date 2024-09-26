@@ -12,10 +12,12 @@ from .pgd_bbox_coder import PGDBBoxCoder
 from .point_xyzwhlr_bbox_coder import PointXYZWHLRBBoxCoder
 from .smoke_bbox_coder import SMOKECoder
 from .distance_point_bbox_coder import DistancePointBBoxCoder_faw
+from .nms_free_coder import NMSFreeCoder
 
 __all__ = [
     'build_bbox_coder', 'DeltaXYZWLHRBBoxCoder', 'PartialBinBasedBBoxCoder',
     'CenterPointBBoxCoder', 'AnchorFreeBBoxCoder', 'GroupFree3DBBoxCoder',
     'PointXYZWHLRBBoxCoder', 'FCOS3DBBoxCoder', 'PGDBBoxCoder', 'SMOKECoder',
-    'MonoFlexCoder', 'FCOS3DBBoxCoderDxScale_faw', 'DistancePointBBoxCoder_faw'
+    'MonoFlexCoder', 'FCOS3DBBoxCoderDxScale_faw', 'DistancePointBBoxCoder_faw',
+    'NMSFreeCoder'
 ]

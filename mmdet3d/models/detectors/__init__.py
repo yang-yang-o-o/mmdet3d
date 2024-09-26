@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from .base import Base3DDetector
+from .base import BaseNview
 from .centerpoint import CenterPoint
 from .dynamic_voxelnet import DynamicVoxelNet
 from .fcos_mono3d import FCOSMono3D
@@ -19,12 +20,18 @@ from .smoke_mono3d import SMOKEMono3D
 from .ssd3dnet import SSD3DNet
 from .votenet import VoteNet
 from .voxelnet import VoxelNet
+from .detr3d import Detr3D
+from .petr3d import Petr3D
+from .bevdet import BEVDet
 
 __all__ = [
-    'Base3DDetector', 'VoxelNet', 'DynamicVoxelNet', 'MVXTwoStageDetector',
+    'Base3DDetector', 'BaseNview', 'VoxelNet', 'DynamicVoxelNet', 'MVXTwoStageDetector',
     'DynamicMVXFasterRCNN', 'MVXFasterRCNN', 'PartA2', 'VoteNet', 'H3DNet',
     'CenterPoint', 'SSD3DNet', 'ImVoteNet', 'SingleStageMono3DDetector',
     'FCOSMono3D', 'ImVoxelNet', 'GroupFree3DNet', 'PointRCNN', 'SMOKEMono3D',
     'SASSD',
-    'FCOSMono3D_faw', 'SingleStageMono3DDetector_faw'
+    'FCOSMono3D_faw', 'SingleStageMono3DDetector_faw',
+    'Detr3D',
+    'Petr3D',
+    'BEVDet'
 ]

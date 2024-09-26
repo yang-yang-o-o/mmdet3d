@@ -6,7 +6,7 @@ from mmdet3d.datasets.pipelines import (Collect3D, DefaultFormatBundle3D,
                                         LoadAnnotations3D,
                                         LoadImageFromFileMono3D,
                                         LoadMultiViewImageFromFiles,
-                                        LoadPointsFromFile,
+                                        LoadPointsFromFile_petrv2,
                                         LoadPointsFromMultiSweeps,
                                         MultiScaleFlipAug3D,
                                         PointSegClassMapping)
@@ -29,7 +29,7 @@ def is_loading_function(transform):
             When transform is `MultiScaleFlipAug3D`, we return None.
     """
     # TODO: use more elegant way to distinguish loading modules
-    loading_functions = (LoadImageFromFile, LoadPointsFromFile,
+    loading_functions = (LoadImageFromFile, LoadPointsFromFile_petrv2,
                          LoadAnnotations3D, LoadMultiViewImageFromFiles,
                          LoadPointsFromMultiSweeps, DefaultFormatBundle3D,
                          Collect3D, LoadImageFromFileMono3D,
