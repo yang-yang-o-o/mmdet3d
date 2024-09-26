@@ -648,7 +648,7 @@ class LoadAnnotations3D(LoadAnnotations):
                 semantic segmentation annotations.
         """
         results = super().__call__(results)
-        if self.with_bbox_3d:
+        if self.with_bbox_3d: # true
             results = self._load_bboxes_3d(results)
             if results is None:
                 return None
@@ -656,7 +656,7 @@ class LoadAnnotations3D(LoadAnnotations):
             results = self._load_bboxes_depth(results)
             if results is None:
                 return None
-        if self.with_label_3d:
+        if self.with_label_3d: # true
             results = self._load_labels_3d(results)
         if self.with_attr_label:
             results = self._load_attr_labels(results)
